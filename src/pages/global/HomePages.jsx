@@ -1,25 +1,72 @@
-import React, { useState } from 'react'
-import productsFromFile from "../../data/products.json"
+import React from 'react'
+import productsFromFile from '../../data/products.json'
+import cartFile from '../../data/cart.json'
+import { useState } from 'react';
 import { Button } from 'react-bootstrap';
+import { Slide, ToastContainer, toast } from 'react-toastify';
+import { Link } from 'react-router-dom';
 
-function Homepages() {
-  const [products, setProducts] = useState (productsFromFile);
+import { useTranslation } from 'react-i18next';
+
+function HomePages() {
+
+  const [products, updateProducts] = useState(productsFromFile);
+
+  const { t} = useTranslation();
+
+  const sortAZ = () => {
+    const result = products.sort((a, b) => a.name.localeCompare(b.name));
+    updateProducts(result.slice());
+  }
+
+  const sortZA = () => {
+    const result = products.sort((a, b) => b.name.localeCompare(a.name));
+    updateProducts(result.slice());
+  }
+
+  const sortPriceAscending = () => {
+    products.sort((a, b) => a.price - b.price);
+    updateProducts(products.slice());
+  }
+
+  const sortPriceDecending = () => {
+    products.sort((a, b) => b.price - a.price);
+    updateProducts(products.slice());
+  }
+
+  const addToCart = (product) => {
+    cartFile.push(product);
+    toast.success(product.name + ' lisatud!');
+  }
+
   return (
     <div>
-      <button>Sorteeri A-Z</button>
-      <button>Sorteeri Z-A</button>
-      <button>Sorteeri hind kasvavalt</button>
-      <button>Sorteeri hind kahanevalt</button>
+      <div className='bold-heading'>{t('products')}</div><br />
+      <Button onClick={() => sortAZ()}>{t('sort-az')}</Button>
+      <Button onClick={() => sortZA()}>{t('sort-za')}</Button><div>  </div>
+      <Button onClick={() => sortPriceAscending()}>{t('sort-price-increasing')}</Button>
+      <Button onClick={() => sortPriceDecending()}>{t('sort-price-decreasing')}</Button>
+      <br /><br />
 
-      {productsFromFile.map(product => 
-        <div>
-          <img src={product.image} alt="" />
+      {products.map((product, index) =>
+        <div key={index}>
+          <img src={product.image} alt='' />
           <div>{product.name}</div>
           <div>{product.price}</div>
-          <Button>Lisa ostukorvi</Button>
-          </div>)}
+          <Button onClick={() => addToCart(product)}>{t('add-to-cart')}</Button>
+          <Link to={'/product/' + index}>
+            <Button>{t('product-details')}</Button>
+          </Link>
+          <br /><br />
+        </div>
+      )}
+      <ToastContainer
+        position="bottom-center"
+        autoClose={3000}
+        transition={Slide}
+      />
     </div>
   )
 }
 
-export default Homepages
+export default HomePages
