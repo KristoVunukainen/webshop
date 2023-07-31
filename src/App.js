@@ -37,7 +37,7 @@ function App() {
     <div className="App">
       <Navbar collapseOnSelect expand="lg" className="bg-body-tertiary">
         <Container>
-          <Navbar.Brand href="#home">Kristo Webshop</Navbar.Brand>
+          <Navbar.Brand as={Link} to="/">Kristo Webshop</Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="me-auto">
@@ -65,7 +65,7 @@ function App() {
                 onClick={changeLangEe}
               />
               <Nav.Link href="#deets">{t("login")}</Nav.Link>
-              <Nav.Link href="#deets">{t("cart")}</Nav.Link>
+              <Nav.Link as={Link} to="/cart">{t("cart")}</Nav.Link>
             </Nav>
           </Navbar.Collapse>
         </Container>
@@ -85,7 +85,7 @@ function App() {
         <Route path="/contact" element={<ContactUs />} />
         <Route path="/shops" element={<Shops />} />
         <Route path="/cart" element={<Cart />} />
-        <Route path="/product" element={<SingleProduct />} />
+        <Route path="/product/productId" element={<SingleProduct />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="*" element={<NotFound />} />

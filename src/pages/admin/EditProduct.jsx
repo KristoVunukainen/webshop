@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import productFromFile from "../../data/products.json"
 
@@ -15,6 +15,7 @@ function EditProduct() {
   const descriptionRef = useRef();
   const activeRef = useRef();
   const navigate = useNavigate ();
+  const [idUnique, setIdunique] = useState (true);
 
   const edit =() => {
     const index = productFromFile.findIndex(product => product.id=== Number (productId));
@@ -31,14 +32,29 @@ function EditProduct() {
 
   }
 
+  const checkIdUniqueness =() => {
+    const result = productFromFile.filter(product => product.id === Number ( idRef.current.value));
+    if (idRef.current.value === productId) {
+      setIdunique(true);
+      return;
+    }
+
+    } 
+    else {
+      setIdunique(false);
+
+    }
+  }
+
   if (found === undefined){
     return <div>Toodet ei leitud</div>
   }
 
   return (
     <div>
+      {idUnique === false && <div>Sisestatud id ei ole unikaalne</div>}
       <label>ID</label> <br />
-      <input defaultValue= {found.id} ref={idRef} type ="number" /> <br />
+      <input onChange={checkIdUniqueness} defaultValue= {found.id} ref={idRef} type ="number" /> <br />
       <label>Nimi</label> <br />
       <input defaultValue= {found.name} ref={nameRef} type ="text" /> <br />
       <label>Hind</label> <br />
@@ -51,7 +67,7 @@ function EditProduct() {
       <input defaultValue= {found.description} ref={descriptionRef} type ="text" /> <br />
       <label>Aktiivne</label> <br />
       <input defaultChecked= {found.active} ref={activeRef} type ="checkbox" /> <br />
-      <button onClick={edit}>Muuda</button>
+      <button disabled={idUnique === false} onClick={edit}>Muuda</button>
 
     </div>
   )

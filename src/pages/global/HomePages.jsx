@@ -1,9 +1,9 @@
 import React from 'react'
 import productsFromFile from '../../data/products.json'
-import cartFile from '../../data/cart.json'
+// import cartFile from '../../data/cart.json'
 import { useState } from 'react';
 import { Button } from 'react-bootstrap';
-import { Slide, ToastContainer, toast } from 'react-toastify';
+import { Slide, ToastContainer } from 'react-toastify';
 import { Link } from 'react-router-dom';
 
 import { useTranslation } from 'react-i18next';
@@ -35,8 +35,16 @@ function HomePages() {
   }
 
   const addToCart = (product) => {
-    cartFile.push(product);
-    toast.success(product.name + ' lisatud!');
+    // cartFile.push(product);
+    const cart = JSON.parse(localStorage.getItem("cart")|| "[]" );
+    cart.push(product);
+    localStorage.setItem("cart", JSON.stringify(cart));
+    // toast.success(product.name + ' lisatud!');
+  }
+
+  const filterByCategory =(categoryClicked) => {
+    const result = productsFromFile.filter(product => product.category === categoryClicked);
+    updateProducts (result);
   }
 
   return (
@@ -47,6 +55,11 @@ function HomePages() {
       <Button onClick={() => sortPriceAscending()}>{t('sort-price-increasing')}</Button>
       <Button onClick={() => sortPriceDecending()}>{t('sort-price-decreasing')}</Button>
       <br /><br />
+      <button onClick={()=> filterByCategory("memory bank")}>memory bank</button>
+      <button>robot vacuum</button>
+      <button>ebay</button>
+      <button>led</button>
+      <button>solar</button>
 
       {products.map((product, index) =>
         <div key={index}>
@@ -54,7 +67,7 @@ function HomePages() {
           <div>{product.name}</div>
           <div>{product.price}</div>
           <Button onClick={() => addToCart(product)}>{t('add-to-cart')}</Button>
-          <Link to={'/product/' + index}>
+          <Link to={'/product/' + product.id}>
             <Button>{t('product-details')}</Button>
           </Link>
           <br /><br />

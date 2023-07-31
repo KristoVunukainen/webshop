@@ -1,26 +1,29 @@
 import React from 'react'
 import { useState } from 'react';
 import { Button } from 'react-bootstrap';
-import cartFromFile from '../../data/cart.json'
+// import cartFromFile from '../../data/cart.json'
 import { Slide, ToastContainer, toast } from 'react-toastify';
 
 import { useTranslation } from 'react-i18next';
 
 function Cart() {
 
-  const [cart, updateCart] = useState(cartFromFile);
+  const [cart, updateCart] = useState(JSON.parse(localStorage.getItem("cart") || "[]"));
 
   const { t } = useTranslation();
 
   const emptyCart = () => {
     cart.splice(0);
     updateCart(cart.slice());
+    localStorage.setItem("cart", JSON.stringify(cart));
   }
 
   const removeProduct = (index) => {
     cart.splice(index, 1);
     updateCart(cart.slice());
     toast.success(t('product-removed'));
+    localStorage.setItem("cart", JSON.stringify(cart));
+
   }
 
   const cartSum = () => {
