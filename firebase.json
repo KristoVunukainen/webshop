@@ -1,6 +1,5 @@
 {
   "hosting": {
-    "site": "maiasmokk",
     "public": "build",
     "ignore": [
       "firebase.json",

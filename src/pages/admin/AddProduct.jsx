@@ -4,9 +4,6 @@ import { ToastContainer, toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
 import { Button } from "react-bootstrap";
 
-
-
-
 function AddProduct() {
   const idRef = useRef();
   const nameRef = useRef();
@@ -16,15 +13,11 @@ function AddProduct() {
   const descriptionRef = useRef();
   const activeRef = useRef();
   const {t} = useTranslation();
-  const toastMessageSuccess = t("product-added");
-  const toastMessageFail = t("product-not-added");
-  const [idUnique, setIdunique] = useState (true);
-
-  
+  const [idUnique, setIdUnique] = useState();
 
   const addNew = () => {
     if (nameRef.current.value === "" || priceRef.current.value < 0) {
-      toast.error(toastMessageFail);
+      toast.error(t("product-not-added"));
     } else {
       productsFromFile.push({
         id: Number(idRef.current.value),
@@ -35,29 +28,25 @@ function AddProduct() {
         category: categoryRef.current.value,
         active: activeRef.current.checked,
       });
-      toast.success(toastMessageSuccess);
-      
+      toast.success(t("product-added"));      
     }
-    const checkIdUniqueness =() => {
-      const result = productFromFile.filter(product => product.id === Number ( idRef.current.value));
-      if (result.length === 0){
-        setIdunique(true)
-  
-      } else {
-        setIdunique(false)
-  
-      }
-    }
-
   };
+
+  const checkIdUniqueness = () => {
+    const result = productsFromFile.filter(product => product.id === Number(idRef.current.value));
+    if (result.length === 0) {
+      setIdUnique(true);
+    } else {
+      setIdUnique(false);
+    }
+  }
 
   return (
     <div>
-       {idUnique === false && <div>Sisestatud id ei ole unikaalne</div>}
-       <input onChange={checkIdUniqueness} defaultValue= {found.id} ref={idRef} type ="number" /> <br />
       <br />
+      {idUnique === false &&  <div>{t("id-not-unique")}!</div>} <br />
       <label>{t("id")}</label> <br />
-      <input ref={idRef} type="number" /> <br /> <br />
+      <input onChange={checkIdUniqueness} ref={idRef} type="number" /> <br /> <br />
       <label>{t("name")}</label> <br />
       <input ref={nameRef} type="text" /> <br /> <br />
       <label>{t("price")}</label> <br />
@@ -70,9 +59,8 @@ function AddProduct() {
       <input ref={descriptionRef} type="text" /> <br /><br />
       <label>{t("active")}</label> 
       <input ref={activeRef} type="checkbox" /> <br /><br />
-      <button disabled={idUnique === false} onClick={edit}>Muuda</button>
       
-      <Button onClick={addNew} variant="success">{t("add")} </Button>
+      <Button disabled={idUnique===false} onClick={addNew} variant="success">{t("add")} </Button>
       <ToastContainer position="bottom-right" autoClose={4000} theme="dark" />
     </div>
   );
