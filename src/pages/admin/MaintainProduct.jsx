@@ -1,38 +1,37 @@
-import React, { useRef } from 'react'
 import productsFromFile from '../../data/products.json'
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
 
-function MaintainProduct() {
+function MaintainProducts() {
 
-  const [products, updateProducts] = useState(productsFromFile);
+  const [products, setProducts] = useState(productsFromFile);
 
   const { t } = useTranslation();
-
-  const searcheRef = useRef ();
+  const searchedRef = useRef();
 
   const deleteProduct = (index) => {
+    // const index = productsFromFile.findIndex(product => product.id === productId);
     productsFromFile.splice(index, 1);
-    updateProducts(productsFromFile.slice());
+    setProducts(productsFromFile.slice());
   }
 
   const searchFromProducts = () => {
-    const result = productsFromFile.filter(product => products.name.includes (searcheRef.current.value),
-    products.name.toLowerCase().includes(searcheRef.current.value.toLowerCase()))
-    updateProducts(result);
-  }
+    const result = productsFromFile.filter(product => 
+      product.name.toLowerCase().includes(searchedRef.current.value.toLowerCase()));
+    setProducts(result);
+  } // HILJEM ID järgi otsimise
 
+// localhost:3000/admin/maintain-products/admin/edit-product     to="admin/edit-product"
+// localhost:3000/admin/edit-product                             to="/admin/edit-product"
   return (
     <div>
       <div className='bold-heading'>{t('maintain-products')}</div><br />
-
-      <input ref= {searcheRef}onChange={searchFromProducts} type="text" />
-      <div>Kokku: {products.length}</div>
-
+      <input ref={searchedRef} onChange={searchFromProducts} type="text" />
+      <div>Kokku: {products.length} tk</div>
       {products.map((product, index) =>
         <div key={product.id}>
           <img src={product.image} alt='' />
@@ -52,4 +51,4 @@ function MaintainProduct() {
 }
 
 
-export default MaintainProduct
+export default MaintainProducts

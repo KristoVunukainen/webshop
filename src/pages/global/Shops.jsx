@@ -1,19 +1,18 @@
 import { useState } from 'react';
-		import Map from '../../components/Map';
-		
+import Map from '../../components/Map';
 
-		function Shops() {
-		  const [coordinaates, setCoordinates] = useState({lngLat: [59.4378, 24.7574], zoom: 11});
-		
+function Shops() {
+  const [coordinaates, setCoordinates] = useState({lngLat: [59.4378, 24.7574], zoom: 11});
 
-		  return (<div>
-		    <button onClick={() => setCoordinates({lngLat: [58.88585988274588, 25.547797289517543], zoom: 7})}>Kõik poed</button>
-		    <button onClick={() => setCoordinates({lngLat: [59.4231, 24.7991], zoom: 13})}>Ülemiste</button>
-		    <button onClick={() => setCoordinates({lngLat: [59.4277, 24.7193], zoom: 13})}>Kristiine</button>
-		    <button onClick={() => setCoordinates({lngLat: [58.37759248384809, 26.730333207001966], zoom: 12})}>Tasku </button>
-		    <Map mapCoordinaates={coordinaates}  />
-		  </div>)
-		}
-		
+  return (<div>
+    <button onClick={() => setCoordinates({lngLat: [58.9423, 25.6107], zoom: 7})}>Kõik poed</button>
+    <button onClick={() => setCoordinates({lngLat: [59.4378, 24.7574], zoom: 11})}>Kõik Tallinna poed</button>
 
-		export default Shops;
+    <button onClick={() => setCoordinates({lngLat: [59.4231, 24.7991], zoom: 13})}>Ülemiste</button>
+    <button onClick={() => setCoordinates({lngLat: [59.4277, 24.7193], zoom: 13})}>Kristiine</button>
+    <button onClick={() => setCoordinates({lngLat: [58.3776, 26.7303], zoom: 13})}>Tasku</button>
+    <Map mapCoordinaates={coordinaates}  />
+  </div>)
+}
+
+export default Shops;
