@@ -1,7 +1,7 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef,useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-<<<<<<< HEAD
 import productsFromFile from "../../data/products.json"
+import config from "../../data/config.json"
 
 function EditProduct() {
   // productId <-- peab olema TÄPSELT samamoodi kirjutatud nagu app.js failist URLis :kooloni järel
@@ -11,27 +11,25 @@ function EditProduct() {
   // .find()   <--  teeb tsükli, otsib kõikide toodete seast ja leiab õige toote üles tema omaduse järgi
   // .find() leiab alati kõige esimese toote kellele tingimus klapib
   const found = productsFromFile.find(product => product.id === Number(productId));
-=======
-import productFromFile from "../../data/products.json"
-
-function EditProduct() {
-  const{productId} = useParams ();
-
-  const found= productFromFile.find (product => product.id=== Number (productId));
-
->>>>>>> parent of 6382dc0 (2)
   const idRef = useRef();
   const nameRef = useRef();
   const priceRef = useRef();
-  const categoryRef = useRef();
   const imageRef = useRef();
+  const categoryRef = useRef();
   const descriptionRef = useRef();
   const activeRef = useRef();
-<<<<<<< HEAD
   const navigate = useNavigate(); 
   // 1. use eesliidesega 2. alati impordin 3. sulud lõpus 4. ei tohi funktsiooni sees 5. ei tohi olla dünaamika
   // hook - Reacti erikood
   const [idUnique, setIdUnique] = useState(true);
+
+  const [categories, setCategories] = useState ([]);
+
+  useEffect(() => {
+    fetch (config.categoryUrl)
+    .then (res => res.json())
+    .then (data => setCategories(data || []));
+  }, []);
 
   const edit = () => {                          //      76139657   ===    "76139657"
     const index = productsFromFile.findIndex(product => product.id === Number(productId));
@@ -82,47 +80,10 @@ function EditProduct() {
 
   if (found === undefined) { // returniga leht lõppeb
     return <div>Toodet ei leitud</div> 
-=======
-  const navigate = useNavigate ();
-  const [idUnique, setIdunique] = useState (true);
-
-  const edit =() => {
-    const index = productFromFile.findIndex(product => product.id=== Number (productId));
-    productFromFile[index] ={
-        "id": Number (idRef.current.value),
-        "image": imageRef.current.value,
-        "name": nameRef.current.value,
-        "price": Number (priceRef.current.value),
-        "description": descriptionRef.current.value,
-        "category": categoryRef.current.value,
-        "active": activeRef.current.checked
-    };
-    navigate ("/admin/maintain-product")
-
-  }
-
-  const checkIdUniqueness =() => {
-    const result = productFromFile.filter(product => product.id === Number ( idRef.current.value));
-    if (idRef.current.value === productId) {
-      setIdunique(true);
-      return;
-    }
-
-    } 
-    else {
-      setIdunique(false);
-
-    }
-  }
-
-  if (found === undefined){
-    return <div>Toodet ei leitud</div>
->>>>>>> parent of 6382dc0 (2)
   }
 
   return (
     <div>
-<<<<<<< HEAD
       {idUnique === false && <div>Sisestatud ID ei ole unikaalne!</div>}
       <label>ID</label> <br />
       <input onChange={checkIdUniqueness} defaultValue={found.id} ref={idRef} type="number" /> <br />
@@ -133,31 +94,15 @@ function EditProduct() {
       <label>Image</label> <br />
       <input defaultValue={found.image} ref={imageRef} type="text" /> <br />
       <label>Category</label> <br />
-      <input defaultValue={found.category} ref={categoryRef} type="text" /> <br />
+      {/* <input defaultValue={found.category} ref={categoryRef} type="text" /> <br /> */}
+      <select ref={categoryRef}>
+        {categories.map(category => <option value="">{category.name}</option>)}
+      </select><br />
       <label>Description</label> <br />
       <input defaultValue={found.description} ref={descriptionRef} type="text" /> <br />
       <label>Active</label> <br />
       <input defaultChecked={found.active} ref={activeRef} type="checkbox" /> <br />
       <button disabled={idUnique === false} onClick={edit}>Muuda</button>
-=======
-      {idUnique === false && <div>Sisestatud id ei ole unikaalne</div>}
-      <label>ID</label> <br />
-      <input onChange={checkIdUniqueness} defaultValue= {found.id} ref={idRef} type ="number" /> <br />
-      <label>Nimi</label> <br />
-      <input defaultValue= {found.name} ref={nameRef} type ="text" /> <br />
-      <label>Hind</label> <br />
-      <input defaultValue= {found.price} ref={priceRef} type ="number" /> <br />
-      <label>Pilt</label> <br />
-      <input defaultValue= {found.image} ref={imageRef} type ="text" /> <br />
-      <label>Kategooria</label> <br />
-      <input defaultValue= {found.category} ref={categoryRef} type ="text" /> <br />
-      <label>Kirjeldus</label> <br />
-      <input defaultValue= {found.description} ref={descriptionRef} type ="text" /> <br />
-      <label>Aktiivne</label> <br />
-      <input defaultChecked= {found.active} ref={activeRef} type ="checkbox" /> <br />
-      <button disabled={idUnique === false} onClick={edit}>Muuda</button>
-
->>>>>>> parent of 6382dc0 (2)
     </div>
   )
 }

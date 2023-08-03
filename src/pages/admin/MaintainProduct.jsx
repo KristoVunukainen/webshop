@@ -1,32 +1,49 @@
-import productsFromFile from '../../data/products.json'
-import { useRef, useState } from 'react';
+// import productsFromFile from '../../data/products.json'
+import { useRef,useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
+import config from "../../data/config.json"
+
 
 
 function MaintainProducts() {
 
-  const [products, setProducts] = useState(productsFromFile);
+  // const [products, setProducts] = useState([]);
+  const [dbProducts, setDbProducts] = useState ([]);
+
+  const [products, setProducts] = useState(dbProducts);
 
   const { t } = useTranslation();
   const searchedRef = useRef();
 
+  useEffect (()=> {
+    // fetch (config.categoryUrl)
+    //   .then(res=> res.json())
+    //   .then(data => setCategories(data || []));
+  
+      fetch (config.productsUrl)
+      .then(res=> res.json())
+      .then(data => {
+         setProducts(data || []);
+         setDbProducts(data || []);
+         });
+    }, []);
+
   const deleteProduct = (index) => {
     // const index = productsFromFile.findIndex(product => product.id === productId);
-    productsFromFile.splice(index, 1);
-    setProducts(productsFromFile.slice());
+    dbProducts.splice(index, 1);
+    setProducts(dbProducts.slice());
   }
 
   const searchFromProducts = () => {
-    const result = productsFromFile.filter(product => 
+    const result = dbProducts.filter(product => 
       product.name.toLowerCase().includes(searchedRef.current.value.toLowerCase()));
     setProducts(result);
   } // HILJEM ID järgi otsimise
 
-// localhost:3000/admin/maintain-products/admin/edit-product     to="admin/edit-product"
-// localhost:3000/admin/edit-product                             to="/admin/edit-product"
+
   return (
     <div>
       <div className='bold-heading'>{t('maintain-products')}</div><br />

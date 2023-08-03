@@ -1,0 +1,5 @@
+{
+    "categoryUrl": "https://webshop-d05fc-default-rtdb.europe-west1.firebasedatabase.app/categories.json",
+    "shopsUrl":"https://webshop-d05fc-default-rtdb.europe-west1.firebasedatabase.app/shops.json",
+    "productsUrl":"https://webshop-d05fc-default-rtdb.europe-west1.firebasedatabase.app/products.json"
+}
